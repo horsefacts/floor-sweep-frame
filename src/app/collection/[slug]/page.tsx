@@ -1,7 +1,7 @@
 import getCollection from "@/app/lib/getCollection";
 import { Metadata } from "next";
 
-const HOST = process.env["HOST"] ?? "https://stateful-counter-frame.vercel.app";
+const HOST = process.env["HOST"] ?? "https://floor-sweep-frame.vercel.app";
 
 export async function generateMetadata({
   params: { slug },
