@@ -18,24 +18,24 @@ export async function POST(
     functionName: "fulfillBasicOrder_efficient_6GL6yc",
     args: [transaction.input_data.parameters],
   });
-  //const newSchema = {
-  //  chainId: `eip155:${chain}`,
-  //  method: "eth_sendTransaction",
-  //  params: {
-  //    functionSignature: `function ${functionSignature} payable`,
-  //    to,
-  //    data,
-  //    value: value.toString(),
-  //  },
-  //};
-  const oldSchema = {
-    description: "fulfillBasicOrder",
-    chainId: chain.toString(),
-    to,
-    value: value.toString(),
-    data,
+  const newSchema = {
+    chainId: `eip155:${chain}`,
+    method: "eth_sendTransaction",
+    params: {
+      functionSignature: `function ${functionSignature} payable`,
+      to,
+      data,
+      value: value.toString(),
+    },
   };
-  return NextResponse.json(oldSchema);
+  //const oldSchema = {
+  //  description: "fulfillBasicOrder",
+  //  chainId: chain.toString(),
+  //  to,
+  //  value: value.toString(),
+  //  data,
+  //};
+  return NextResponse.json(newSchema);
 }
 
 export const GET = POST;
