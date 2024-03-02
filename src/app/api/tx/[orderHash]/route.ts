@@ -1,11 +1,12 @@
 import seaportAbi from "@/app/lib/contracts/seaportAbi";
 import getFulfillment from "@/app/lib/getFulfillment";
+import { errors } from "jose";
 import { NextRequest, NextResponse } from "next/server";
-import { encodeFunctionData } from "viem";
+import { encodeFunctionData, getAbiItem } from "viem";
 
 export async function POST(
   _req: NextRequest,
-  { params: { orderHash } }: { params: { orderHash: string } },
+  { params: { orderHash } }: { params: { orderHash: string } }
 ) {
   const fulfillment = await getFulfillment(orderHash);
   const transaction = fulfillment.fulfillment_data.transaction;
@@ -18,24 +19,23 @@ export async function POST(
     functionName: "fulfillBasicOrder_efficient_6GL6yc",
     args: [transaction.input_data.parameters],
   });
-  const newSchema = {
+  const errorsAbi = seaportAbi.filter((t) => t.type === "error");
+  const functionAbi = getAbiItem({
+    abi: seaportAbi,
+    name: "fulfillBasicOrder_efficient_6GL6yc",
+  });
+  const txData = {
     chainId: `eip155:${chain}`,
     method: "eth_sendTransaction",
     params: {
-      functionSignature: `function ${functionSignature} payable`,
+      functionSignature: "", // deprecated, use abi below
+      abi: [functionAbi, ...errorsAbi],
       to,
       data,
       value: value.toString(),
     },
   };
-  //const oldSchema = {
-  //  description: "fulfillBasicOrder",
-  //  chainId: chain.toString(),
-  //  to,
-  //  value: value.toString(),
-  //  data,
-  //};
-  return NextResponse.json(newSchema);
+  return NextResponse.json(txData);
 }
 
 export const GET = POST;
