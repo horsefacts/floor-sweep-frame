@@ -20,6 +20,7 @@ export async function POST(req: NextRequest) {
     },
   );
   const html = await onceUponResponse.text();
+  console.log(html);
 
   return new NextResponse(html, {
     status: 200,
