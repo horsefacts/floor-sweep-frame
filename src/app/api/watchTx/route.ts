@@ -11,6 +11,8 @@ export async function POST(req: NextRequest) {
     untrustedData: { transactionId: txHash },
   } = frameData;
 
+  console.log(frameData);
+
   const onceUponResponse = await fetch(
     `https://api.onceupon.gg/v1/transactions/${txHash}/farcaster-frame`,
     {
