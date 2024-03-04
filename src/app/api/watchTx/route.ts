@@ -10,11 +10,10 @@ export async function POST(req: NextRequest) {
   const {
     untrustedData: { transactionId: txHash },
   } = frameData;
-
-  console.log(frameData);
+  const hash = txHash.slice(1, -1);
 
   const onceUponResponse = await fetch(
-    `https://api.onceupon.gg/v1/transactions/${txHash}/farcaster-frame`,
+    `https://api.onceupon.gg/v1/transactions/${hash}/farcaster-frame`,
     {
       method: "POST",
       body: JSON.stringify(frameData),
