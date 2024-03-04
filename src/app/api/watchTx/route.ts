@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
   const hash = txHash.slice(1, -1);
 
   const onceUponResponse = await fetch(
-    `https://api.onceupon.gg/v1/transactions/${hash}/farcaster-frame`,
+    `https://api.onceupon.gg/v1/transactions/${hash}/farcaster-frame?delay=4000`,
     {
       method: "POST",
       body: JSON.stringify(frameData),
