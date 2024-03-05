@@ -8,6 +8,8 @@ export async function POST(req: NextRequest) {
     untrustedData: { state: encodedState, transactionId },
   } = frameData;
 
+  console.log(frameData);
+
   let txHash : string;
   if (transactionId) {
     txHash = transactionId.slice(1, -1);
@@ -17,7 +19,7 @@ export async function POST(req: NextRequest) {
   }
 
   const postUrl = `${HOST}/api/watchTx`;
-  let imageUrl = `${HOST}/api/images/watchTx`
+  let imageUrl = `${HOST}/api/images/watchTx?txHash=${txHash}`
 
   const txData = await fetch(
     `https://api.onceupon.gg/v1/transactions/${txHash}`,
