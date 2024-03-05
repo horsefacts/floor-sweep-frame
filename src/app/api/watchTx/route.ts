@@ -5,11 +5,18 @@ const HOST = process.env["HOST"] ?? "https://floor-sweep-frame.vercel.app";
 export async function POST(req: NextRequest) {
   const frameData = await req.json();
   const {
-    untrustedData: { transactionId: txHash },
+    untrustedData: { state: encodedState, transactionId },
   } = frameData;
-  const hash = txHash.slice(1, -1);
 
-  let postUrl = `${HOST}/api/watchTx`;
+  let txHash : string;
+  if (transactionId) {
+    txHash = transactionId.slice(1, -1);
+  } else {
+    const state = JSON.parse(decodeURIComponent(encodedState));
+    txHash = state.txHash;
+  }
+
+  const postUrl = `${HOST}/api/watchTx`;
   let imageUrl = `${HOST}/api/images/watchTx`
 
   const txData = await fetch(
@@ -18,6 +25,8 @@ export async function POST(req: NextRequest) {
   if (txData.status === 200) {
     imageUrl = `https://og.onceupon.gg/card/${txHash}?datetime=${Date.now()}`
   }
+
+  const newState = encodeURIComponent(JSON.stringify({ txHash }));
 
   return new NextResponse(
     `<!DOCTYPE html>
@@ -28,10 +37,11 @@ export async function POST(req: NextRequest) {
           <meta name="fc:frame" content="vNext" />
           <meta name="fc:frame:image" content="${imageUrl}" />
           <meta name="fc:frame:post_url" content="${postUrl}" />
+          <meta name="fc:frame:state" content="${newState}" />
           <meta name="fc:frame:button:1" content="Refresh" />
           <meta name="fc:frame:button:2" content="View on BaseScan" />
           <meta name="fc:frame:button:2:action" content="link" />
-          <meta name="fc:frame:button:2:target" content="https://basescan.org/tx/${hash}" />
+          <meta name="fc:frame:button:2:target" content="https://basescan.org/tx/${txHash}" />
         </head>
         <body></body>
       </html>`,
