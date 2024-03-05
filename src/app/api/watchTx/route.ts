@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
 
   let txHash : string;
   if (transactionId) {
-    txHash = transactionId.slice(1, -1);
+    txHash = transactionId;
   } else {
     const state = JSON.parse(decodeURIComponent(encodedState));
     txHash = state.txHash;
