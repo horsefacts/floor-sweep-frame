@@ -10,25 +10,32 @@ export async function POST(req: NextRequest) {
 
   console.log(frameData);
 
-  let txHash : string;
+  let txHash: string;
+  let indexed = false;
   if (transactionId) {
     txHash = transactionId;
   } else {
     const state = JSON.parse(decodeURIComponent(encodedState));
     txHash = state.txHash;
+    indexed = state.indexed;
   }
 
   const postUrl = `${HOST}/api/watchTx`;
-  let imageUrl = `${HOST}/api/images/watchTx?txHash=${txHash}`
+  let imageUrl = `${HOST}/api/images/watchTx?txHash=${txHash}`;
 
-  const txData = await fetch(
-    `https://api.onceupon.gg/v1/transactions/${txHash}`,
-  );
-  if (txData.status === 200) {
-    imageUrl = `https://og.onceupon.gg/card/${txHash}?datetime=${Date.now()}`
+  if (indexed) {
+      imageUrl = `https://og.onceupon.gg/card/${txHash}?datetime=${Date.now()}`;
+  } else {
+    const txData = await fetch(
+      `https://api.onceupon.gg/v1/transactions/${txHash}`
+    );
+    if (txData.status === 200) {
+      indexed = true;
+      imageUrl = `https://og.onceupon.gg/card/${txHash}?datetime=${Date.now()}`;
+    }
   }
 
-  const newState = encodeURIComponent(JSON.stringify({ txHash }));
+  const newState = encodeURIComponent(JSON.stringify({ txHash, indexed }));
 
   return new NextResponse(
     `<!DOCTYPE html>
@@ -52,6 +59,6 @@ export async function POST(req: NextRequest) {
       headers: {
         "Content-Type": "text/html",
       },
-    },
+    }
   );
 }
