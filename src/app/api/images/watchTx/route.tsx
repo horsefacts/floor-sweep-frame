@@ -4,10 +4,7 @@ import { NextRequest } from "next/server";
 
 export const runtime = "edge";
 
-export async function GET(
-  _req: NextRequest,
-  { params: { txHash } }: { params: { txHash: string } }
-) {
+export async function GET(_req: NextRequest) {
   return new ImageResponse(
     (
       <Card>
@@ -21,13 +18,13 @@ export async function GET(
             padding: "0 120px",
             whiteSpace: "pre-wrap",
             display: "flex",
-            flexDirection: "row",
+            flexDirection: "column",
             alignItems: "center",
             justifyContent: "space-between",
           }}
         >
           <h1 style={{ fontSize: 48, padding: 20 }}>Broadcasting...</h1>
-          <div style={{ display: "flex" }}>{txHash}</div>
+          <div style={{ display: "flex" }}>Refresh to check status.</div>
         </div>
       </Card>
     ),

@@ -8,8 +8,6 @@ export async function POST(req: NextRequest) {
     untrustedData: { state: encodedState, transactionId },
   } = frameData;
 
-  console.log(frameData);
-
   let txHash: string;
   let indexed = false;
   if (transactionId) {
@@ -21,10 +19,10 @@ export async function POST(req: NextRequest) {
   }
 
   const postUrl = `${HOST}/api/watchTx`;
-  let imageUrl = `${HOST}/api/images/watchTx?txHash=${txHash}`;
+  let imageUrl = `${HOST}/api/images/watchTx`;
 
   if (indexed) {
-      imageUrl = `https://og.onceupon.gg/card/${txHash}?datetime=${Date.now()}`;
+    imageUrl = `https://og.onceupon.gg/card/${txHash}?datetime=${Date.now()}`;
   } else {
     const txData = await fetch(
       `https://api.onceupon.gg/v1/transactions/${txHash}`
