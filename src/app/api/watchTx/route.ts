@@ -24,14 +24,14 @@ export async function POST(req: NextRequest) {
   let imageUrl = `${HOST}/api/images/watchTx?txHash=${txHash}`;
 
   if (indexed) {
-      imageUrl = `https://og.onceupon.gg/card/${txHash}`;
+      imageUrl = `https://og.onceupon.gg/card/${txHash}?datetime=${Date.now()}`;
   } else {
     const txData = await fetch(
       `https://api.onceupon.gg/v1/transactions/${txHash}`
     );
     if (txData.status === 200) {
       indexed = true;
-      imageUrl = `https://og.onceupon.gg/card/${txHash}`;
+      imageUrl = `https://og.onceupon.gg/card/${txHash}?datetime=${Date.now()}`;
     }
   }
 
