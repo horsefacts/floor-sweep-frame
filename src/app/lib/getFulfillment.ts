@@ -1,4 +1,4 @@
-async function getFulfillment(orderHash: string) {
+async function getFulfillment(orderHash: string, address?: string) {
   const data = {
     listing: {
       hash: orderHash,
@@ -9,7 +9,7 @@ async function getFulfillment(orderHash: string) {
       // We should probably POST the connected address. This works for basic
       // order listings but many use cases will want to know the caller
       // address to generate calldata.
-      address: "0x0000000000000000000000000000000000000000",
+      address: address || "0x0000000000000000000000000000000000000000",
     },
   };
   const res = await fetch(

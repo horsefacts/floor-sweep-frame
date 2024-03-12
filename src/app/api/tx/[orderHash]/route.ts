@@ -5,10 +5,16 @@ import { NextRequest, NextResponse } from "next/server";
 import { encodeFunctionData, getAbiItem } from "viem";
 
 export async function POST(
-  _req: NextRequest,
+  req: NextRequest,
   { params: { orderHash } }: { params: { orderHash: string } }
 ) {
-  const fulfillment = await getFulfillment(orderHash);
+  const frameData = await req.json();
+  const {
+    untrustedData: { address },
+  } = frameData;
+  console.log("address", address);
+
+  const fulfillment = await getFulfillment(orderHash, address);
   const transaction = fulfillment.fulfillment_data.transaction;
   const { chain, to, value, function: functionSignature } = transaction;
   if (!functionSignature.startsWith("fulfillBasicOrder_efficient_6GL6yc")) {
