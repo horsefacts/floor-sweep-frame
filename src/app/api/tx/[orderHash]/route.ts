@@ -33,7 +33,6 @@ export async function POST(
   const txData = {
     chainId: `eip155:${chain}`,
     method: "eth_sendTransaction",
-    attribution: false,
     params: {
       functionSignature: "", // deprecated, use abi below
       abi: [functionAbi, ...errorsAbi],
