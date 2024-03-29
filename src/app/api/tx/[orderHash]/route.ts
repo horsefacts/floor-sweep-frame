@@ -1,6 +1,5 @@
 import seaportAbi from "@/app/lib/contracts/seaportAbi";
 import getFulfillment from "@/app/lib/getFulfillment";
-import { errors } from "jose";
 import { NextRequest, NextResponse } from "next/server";
 import { encodeFunctionData, getAbiItem } from "viem";
 
@@ -12,8 +11,6 @@ export async function POST(
   const {
     untrustedData: { address },
   } = frameData;
-  console.log("address", address);
-
   const fulfillment = await getFulfillment(orderHash, address);
   const transaction = fulfillment.fulfillment_data.transaction;
   const { chain, to, value, function: functionSignature } = transaction;
@@ -39,6 +36,7 @@ export async function POST(
       to,
       data,
       value: value.toString(),
+      gas: "1000000",
     },
   };
   return NextResponse.json(txData);

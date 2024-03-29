@@ -3,7 +3,7 @@ async function getFulfillment(orderHash: string, address?: string) {
     listing: {
       hash: orderHash,
       chain: "base",
-      protocol_address: "0x00000000000000adc04c56bf30ac9d3c0aaf14dc",
+      protocol_address: "0x0000000000000068f116a894984e2db1123eb395",
     },
     fulfiller: {
       // We should probably POST the connected address. This works for basic
@@ -21,7 +21,7 @@ async function getFulfillment(orderHash: string, address?: string) {
         "content-type": "application/json",
         "x-api-key": process.env.OPENSEA_API_KEY ?? "",
       },
-    },
+    }
   );
   return res.json();
 }
