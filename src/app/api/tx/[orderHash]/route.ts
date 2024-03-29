@@ -32,7 +32,7 @@ export async function POST(
     method: "eth_sendTransaction",
     params: {
       //abi: [functionAbi, ...errorsAbi],
-      to: 0x79d31bFcA5Fda7A4F15b36763d2e44C99D811a6C,
+      to: "0x79d31bFcA5Fda7A4F15b36763d2e44C99D811a6C",
       value: "42069",
       gas: "1000000",
     },
